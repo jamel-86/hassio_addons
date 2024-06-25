@@ -57,3 +57,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Changed
 
 - Set host_network to false.
+
+## [1.1.6] - 2024-06-25
+
+### Changed
+
+- Added health check.

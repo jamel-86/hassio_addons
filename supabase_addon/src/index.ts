@@ -126,8 +126,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  console.log('Serving index.html');
 });
 
-app.listen(port, () => {
+// Health check endpoint
+app.get('/healthz', (req, res) => {
+  res.status(200).send('OK');
+  console.log('Health check passed');
+});
+
+app.listen(port, '0.0.0.0', () => {
   console.log(`Supabase Client UI listening at http://localhost:${port}`);
 });
