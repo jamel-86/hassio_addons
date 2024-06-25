@@ -1,6 +1,11 @@
 document.addEventListener('DOMContentLoaded', async () => {
-  const SUPABASE_URL = 'your-supabase-url';
-  const SUPABASE_KEY = 'your-supabase-key';
+  // Fetch Supabase configuration from the backend
+  const response = await fetch('/config');
+  const config = await response.json();
+
+  const SUPABASE_URL = config.SUPABASE_URL;
+  const SUPABASE_KEY = config.SUPABASE_KEY;
+
   const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
   const { data, error } = await supabase.from('states').select('*');

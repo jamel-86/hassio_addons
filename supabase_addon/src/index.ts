@@ -129,6 +129,11 @@ app.get('/', (req, res) => {
   console.log('Serving index.html');
 });
 
+// Endpoint to get Supabase config
+app.get('/config', (req, res) => {
+  res.json({ SUPABASE_URL, SUPABASE_KEY });
+});
+
 // Health check endpoint
 app.get('/healthz', (req, res) => {
   res.status(200).send('OK');
