@@ -4,6 +4,7 @@ import WebSocket from 'ws';
 import { initializeSupabase, insertEvent, insertTransformedEvent } from './supabaseClient';
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
+import cors from 'cors';
 
 // Load environment variables from .env file if it exists
 dotenv.config();
@@ -120,6 +121,9 @@ connectAndSubscribeToEvents();
 // Express server setup
 const app = express();
 const port = 8099;
+
+// Use CORS middleware to allow requests from any origin
+app.use(cors());
 
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
