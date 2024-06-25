@@ -28,7 +28,7 @@ profile supabase_addon flags=(attach_disconnected,mediate_deleted) {
   /data/** rw,
 
   # Start new profile for service
-  /usr/bin/collectEvents cx -> collectEvents,
+  /usr/src/app/src/index.ts cx -> collectEvents,
 
   profile collectEvents flags=(attach_disconnected,mediate_deleted) {
     #include <abstractions/base>
@@ -43,8 +43,7 @@ profile supabase_addon flags=(attach_disconnected,mediate_deleted) {
     /share/** rw,
 
     # Access required for service functionality
-    /usr/bin/collectEvents r,
-    /usr/src/app/server.js r,
+    /usr/src/app/src/index.ts r,
     /usr/src/app/public/** r,
     /bin/bash rix,
     /bin/echo ix,
