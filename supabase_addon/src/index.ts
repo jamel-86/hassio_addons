@@ -1,12 +1,10 @@
-// index.ts which is the entry point of the add-on. It starts a WebSocket connection to Home Assistant and subscribes to events. It also starts an Express server to serve the frontend and provide a health check endpoint.
 import express from 'express';
 import path from 'path';
 import WebSocket from 'ws';
-import { initializeSupabase, insertEvent, insertTransformedEvent, insertState } from './supabaseClient';
+import { initializeSupabase, insertEvent, insertTransformedEvent, insertState, getStateHistory } from './supabaseClient';
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 import cors from 'cors';
-import { getStateHistory } from './supabaseClient';
 
 // Load environment variables from .env file if it exists
 dotenv.config();

@@ -1,4 +1,3 @@
-// supabaseClient.ts which is a module that contains functions to interact with Supabase. It is used by the Express server to insert data into the Supabase database.
 import { createClient } from '@supabase/supabase-js';
 
 let supabase: any;
@@ -71,20 +70,15 @@ export const insertTransformedEvent = async (data: any) => {
 };
 
 export const getStateHistory = async (entityId: string) => {
-  try {
-    const { data, error } = await supabase
-      .from('states')
-      .select('state_history')
-      .eq('entity_id', entityId)
-      .single();
+  const { data, error } = await supabase
+    .from('states')
+    .select('state_history')
+    .eq('entity_id', entityId)
+    .single();
 
-    if (error) {
-      throw error;
-    }
-
-    return data ? data.state_history : [];
-  } catch (error) {
-    console.error('Error fetching state history:', error);
-    throw error;
+  if (error) {
+    throw new Error(error.message);
   }
+
+  return data.state_history;
 };
