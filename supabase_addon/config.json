@@ -14,7 +14,7 @@
     "home_assistant_url": "",
     "home_assistant_token": ""
   },
-  "$schema": {
+  "schema": {
     "supabase_url": "str",
     "supabase_key": "str",
     "home_assistant_url": "str",
