@@ -39,3 +39,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Added
 
 - Added icon to the addon.
+
+## [1.1.3] - 2024-06-25
+
+### Added
+
+- Added apparmor for security to the addon.

@@ -1,7 +1,7 @@
 {
   "name": "Home Assistant supabase client",
   "maintainer": "@jamel-86",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "slug": "supabase_addon",
   "description": "Supabase client for Home Assistant that will store your entities data.",
   "url": "https://github.com/jamel-86/hassio_addons",
