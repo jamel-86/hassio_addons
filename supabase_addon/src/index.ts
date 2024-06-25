@@ -85,12 +85,11 @@ const connectAndSubscribeToEvents = () => {
     } else if (message.type === 'result' && message.id === 2) {
       // Handle initial states
       const states = message.result;
-      console.log('Fetched initial states:', states);
+      console.log('Fetched initial states');
 
       for (const state of states) {
         if (ENTITIES.length === 0 || ENTITIES.includes(state.entity_id)) {
           try {
-            console.log('Inserting state:', state);
             await insertState({
               entity_id: state.entity_id,
               state: state.state,
@@ -106,7 +105,7 @@ const connectAndSubscribeToEvents = () => {
       }
     } else if (message.type === 'event') {
       const event = message.event;
-      console.log('Received event:', event);
+      console.log('Received event from:', event.entity_id);
 
       // Check if the event's entity_id is in the list of entities to store, or if the list is empty (store all)
       if (ENTITIES.length === 0 || ENTITIES.includes(event.data.entity_id)) {
@@ -139,7 +138,7 @@ const connectAndSubscribeToEvents = () => {
           await insertTransformedEvent(transformedEvent);
 
           // Insert the state data
-          console.log('Inserting state from event data:', event.data.new_state);
+          console.log('Inserting state from event data: from', event.data.entity_id);
           await insertState({
             entity_id: event.data.entity_id,
             state: event.data.new_state.state,
