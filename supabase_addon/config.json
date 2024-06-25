@@ -7,6 +7,7 @@
   "url": "https://github.com/jamel-86/hassio_addons",
   "arch": ["armv7", "armhf", "aarch64", "amd64", "i386"],
   "startup": "services",
+  "apparmor": true,
   "boot": "auto",
   "host_network": true,
   "options": {
