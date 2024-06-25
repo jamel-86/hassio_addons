@@ -8,7 +8,10 @@ export const initializeSupabase = (url: string, key: string) => {
 
 export const insertState = async (data: any) => {
   const { error } = await supabase.from('states').insert(data);
-  if (error) throw new Error(error.message);
+  if (error) {
+    console.error('Error inserting state:', error);
+    throw new Error(error.message);
+  }
 };
 
 export const insertEvent = async (data: any) => {

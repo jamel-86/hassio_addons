@@ -1,51 +1,50 @@
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  // Detect system theme
+  const prefersDarkScheme = window.matchMedia(
+    "(prefers-color-scheme: dark)"
+  ).matches;
+  if (prefersDarkScheme) {
+    document.body.classList.add("dark");
+  } else {
+    document.body.classList.remove("dark");
+  }
+
+  // Fetch Supabase configuration from the backend
   try {
-    // Fetch Supabase configuration from the backend
-    const response = await fetch('http://localhost:8099/config');
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
+    const response = await fetch("http://localhost:8099/config");
     const config = await response.json();
-    console.log('Fetched config:', config); // Log the fetched config
 
     const SUPABASE_URL = config.SUPABASE_URL;
     const SUPABASE_KEY = config.SUPABASE_KEY;
 
-    // Ensure the Supabase library is available
-    if (typeof supabase === 'undefined') {
-      throw new Error('Supabase library is not loaded');
-    }
-
-    // Initialize Supabase client
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    // Initialize Supabase
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     // Fetch states from Supabase
-    const { data, error } = await supabaseClient.from('states').select('*');
+    const { data, error } = await supabase.from("states").select("*");
     if (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
       return;
     }
 
-    console.log('Fetched data:', data); // Log the fetched data
+    console.log("Fetched data:", data); // Log the fetched data
 
-    const tableBody = document.getElementById('data-table').querySelector('tbody');
-    tableBody.innerHTML = ''; // Clear existing table data
+    const tableBody = document.getElementById("data-table");
+    tableBody.innerHTML = ""; // Clear existing table data
 
-    if (!Array.isArray(data)) {
-      console.error('Data is not an array:', data);
-      return;
-    }
-
-    data.forEach(row => {
-      const tr = document.createElement('tr');
+    data.forEach((row) => {
+      const tr = document.createElement("tr");
+      tr.classList.add("border-b", "border-gray-200", "dark:border-gray-600");
       tr.innerHTML = `
-        <td>${row.entity_id}</td>
-        <td>${row.state}</td>
-        <td>${new Date(row.last_changed).toLocaleString()}</td>
+        <td class="py-2 px-4">${row.entity_id}</td>
+        <td class="py-2 px-4">${row.state}</td>
+        <td class="py-2 px-4">${new Date(
+          row.last_changed
+        ).toLocaleString()}</td>
       `;
       tableBody.appendChild(tr);
     });
   } catch (error) {
-    console.error('Error in script:', error);
+    console.error("Error fetching configuration:", error);
   }
 });

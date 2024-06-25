@@ -1,10 +1,11 @@
 import express from 'express';
 import path from 'path';
 import WebSocket from 'ws';
-import { initializeSupabase, insertEvent, insertTransformedEvent } from './supabaseClient';
+import { initializeSupabase, insertEvent, insertTransformedEvent, insertState } from './supabaseClient';
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 import cors from 'cors';
+import axios from 'axios';
 
 // Load environment variables from .env file if it exists
 dotenv.config();
@@ -26,8 +27,19 @@ const getConfig = () => {
 
   // Fallback to reading from the options.json file
   try {
-    const configFile = fs.readFileSync(CONFIG_PATH, 'utf-8');
-    return JSON.parse(configFile);
+    if (fs.existsSync(CONFIG_PATH)) {
+      const configFile = fs.readFileSync(CONFIG_PATH, 'utf-8');
+      return JSON.parse(configFile);
+    } else {
+      console.warn(`Configuration file not found at ${CONFIG_PATH}. Falling back to environment variables.`);
+      return {
+        supabase_url: process.env.SUPABASE_URL,
+        supabase_key: process.env.SUPABASE_KEY,
+        home_assistant_url: process.env.HOME_ASSISTANT_URL,
+        home_assistant_token: process.env.HOME_ASSISTANT_TOKEN,
+        entities: process.env.ENTITIES ? process.env.ENTITIES.split(',') : []
+      };
+    }
   } catch (error) {
     console.error('Error reading configuration file:', error);
     process.exit(1);
@@ -42,7 +54,6 @@ const HOME_ASSISTANT_URL = config.home_assistant_url;
 const HOME_ASSISTANT_TOKEN = config.home_assistant_token;
 const ENTITIES = config.entities;
 const HOME_ASSISTANT_WS_URL = `${HOME_ASSISTANT_URL.replace(/^http/, 'ws')}/api/websocket`;
-
 initializeSupabase(SUPABASE_URL, SUPABASE_KEY);
 
 const connectAndSubscribeToEvents = () => {
@@ -68,6 +79,7 @@ const connectAndSubscribeToEvents = () => {
       }));
     } else if (message.type === 'event') {
       const event = message.event;
+      console.log('Received event:');
 
       // Check if the event's entity_id is in the list of entities to store, or if the list is empty (store all)
       if (ENTITIES.length === 0 || ENTITIES.includes(event.data.entity_id)) {
@@ -86,6 +98,7 @@ const connectAndSubscribeToEvents = () => {
 
         try {
           // Insert the original event data
+          console.log('Inserting original event data to Supabase');
           await insertEvent({
             event_type: event.event_type,
             event_data: event.data,
@@ -95,10 +108,13 @@ const connectAndSubscribeToEvents = () => {
           });
 
           // Insert the transformed event data
+          console.log('Inserting transformed event data to Supabase');
           await insertTransformedEvent(transformedEvent);
         } catch (error) {
           console.error('Error inserting event:', error);
         }
+      } else {
+        console.log('Entity not in the list of entities to store:');
       }
     } else if (message.type === 'auth_invalid') {
       console.error('Authentication failed:', message.message);
@@ -115,8 +131,43 @@ const connectAndSubscribeToEvents = () => {
   });
 };
 
+// Function to fetch states from Home Assistant and insert them into Supabase
+const fetchAndStoreStates = async () => {
+  try {
+    const response = await axios.get(`${HOME_ASSISTANT_URL}/api/states`, {
+      headers: {
+        Authorization: `Bearer ${HOME_ASSISTANT_TOKEN}`
+      }
+    });
+
+    const states = response.data;
+    console.log('Fetched states');
+
+    for (const state of states) {
+      try {
+        console.log('Inserting state');
+        await insertState({
+          entity_id: state.entity_id,
+          state: state.state,
+          attributes: state.attributes,
+          last_changed: state.last_changed,
+          last_updated: state.last_updated,
+          context: state.context,
+        });
+      } catch (error) {
+        console.error('Error inserting state:', error);
+      }
+    }
+  } catch (error) {
+    console.error('Error fetching states:', error);
+  }
+};
+
 // Start WebSocket connection and subscribe to events
 connectAndSubscribeToEvents();
+
+// Fetch and store states at startup
+fetchAndStoreStates();
 
 // Express server setup
 const app = express();
@@ -130,7 +181,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
-  console.log('Serving index.html');
+  console.log('Serving frontend');
 });
 
 // Endpoint to get Supabase config

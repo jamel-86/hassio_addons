@@ -47,8 +47,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - Set host_network to false.
 
-## [1.1.8] - 2024-06-25
+## [1.1.18] - 2024-06-25
 
 ### Changed
 
 - Pass the supabase key and url to the frontend with api call.
+
+## [1.1.2] - 2024-06-25
+
+### Changed
+
+- Refined the frontend with little better UI with tailwindcss.
