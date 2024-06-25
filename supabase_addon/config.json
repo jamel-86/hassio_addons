@@ -1,9 +1,10 @@
 {
   "name": "Home Assistant supabase client",
   "maintainer": "@jamel-86",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "slug": "supabase_addon",
-  "description": "Supabase client for Home Assistant",
+  "description": "Supabase client for Home Assistant that will store your entities data.",
+  "url": "https://github.com/jamel-86/hassio_addons",
   "arch": ["armv7", "armhf", "aarch64", "amd64", "i386"],
   "startup": "services",
   "boot": "auto",
