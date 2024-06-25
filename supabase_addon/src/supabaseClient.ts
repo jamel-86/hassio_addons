@@ -1,6 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Define a function to initialize the Supabase client
 let supabase: any;
 
 export const initializeSupabase = (url: string, key: string) => {
@@ -13,6 +12,11 @@ export const insertState = async (data: any) => {
 };
 
 export const insertEvent = async (data: any) => {
+  if (!data.event_type || !data.event_data) {
+    console.error('Invalid event data:', data);
+    throw new Error('Invalid event data: event_type and event_data are required');
+  }
+
   const { error } = await supabase.from('events').insert(data);
   if (error) throw new Error(error.message);
 };
