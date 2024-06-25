@@ -1,3 +1,4 @@
+// index.ts which is the entry point of the add-on. It starts a WebSocket connection to Home Assistant and subscribes to events. It also starts an Express server to serve the frontend and provide a health check endpoint.
 import express from 'express';
 import path from 'path';
 import WebSocket from 'ws';
@@ -5,6 +6,7 @@ import { initializeSupabase, insertEvent, insertTransformedEvent, insertState } 
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 import cors from 'cors';
+import { getStateHistory } from './supabaseClient';
 
 // Load environment variables from .env file if it exists
 dotenv.config();
@@ -199,4 +201,15 @@ app.get('/healthz', (req, res) => {
 
 app.listen(port, '0.0.0.0', () => {
   console.log(`Supabase Client UI listening at http://localhost:${port}`);
+});
+
+app.get('/api/state_history/:entity_id', async (req, res) => {
+  const entityId = req.params.entity_id;
+  try {
+    const stateHistory = await getStateHistory(entityId);
+    res.json(stateHistory);
+  } catch (error) {
+    console.error('Error fetching state history:', error);
+    res.status(500).send('Internal Server Error');
+  }
 });

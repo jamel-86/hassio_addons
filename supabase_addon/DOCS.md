@@ -106,6 +106,32 @@ To run the script locally, ensure you have Node.js and ts-node installed. Then, 
 npx ts-node src/index.ts
 ```
 
+### Collect the data and show on graphs in Home Assistant
+
+```
+sensor:
+  - platform: rest
+    name: Supabase Sensor
+    resource: http://localhost:8099/api/state_history/YOUR_ENTITY_ID
+    method: GET
+    value_template: '{{ value_json[-1].state }}'
+    json_attributes_path: '$[-1]'
+    json_attributes:
+      - timestamp
+    unit_of_measurement: 'YOUR_UNIT'
+    device_class: 'YOUR_DEVICE_CLASS'
+    state_class: 'measurement'
+
+  - platform: template
+    sensors:
+      supabase_measurement:
+        friendly_name: "Supabase Measurement"
+        value_template: "{{ state_attr('sensor.supabase_sensor', 'state') }}"
+        unit_of_measurement: 'YOUR_UNIT'
+        device_class: 'YOUR_DEVICE_CLASS'
+        state_class: 'measurement'
+```
+
 ## Contributing
 
 Contributions are welcome! Please read the [contributing guidelines](https://github.com/jamel-86/hassio_addons/blob/master/CONTRIBUTING.md) for more information.

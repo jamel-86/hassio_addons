@@ -28,6 +28,7 @@ Find the Home Assistant Supabase Client add-on in the add-on store and click **I
 3. **Configure the Add-on**
 
 After installation, navigate to the add-on's **Configuration** tab and set the necessary options:
+
 ```
   Supabase Url: https://[PROJECT-ID].supabase.co
   Supabase Key: [SUPABASE_KEY]
@@ -41,6 +42,7 @@ After installation, navigate to the add-on's **Configuration** tab and set the n
 To ensure that your Supabase instance is ready to store Home Assistant states and events, execute the following SQL queries to create the necessary tables:
 
 Create `states` Table:
+
 ```
 CREATE TABLE states (
     id SERIAL PRIMARY KEY,
@@ -48,11 +50,14 @@ CREATE TABLE states (
     state TEXT,
     attributes JSONB,
     last_changed TIMESTAMP,
-    last_updated TIMESTAMP
+    last_updated TIMESTAMP,
+    state_history JSONB
 );
+
 ```
 
 Create `events` Table:
+
 ```
 CREATE TABLE events (
     id SERIAL PRIMARY KEY,
@@ -65,6 +70,7 @@ CREATE TABLE events (
 ```
 
 Create `transformed_events` Table:
+
 ```
 CREATE TABLE transformed_events (
     id SERIAL PRIMARY KEY,
@@ -81,6 +87,7 @@ CREATE TABLE transformed_events (
 ```
 
 ## Usage Instructions
+
 ### Environment Variables
 
 Alternatively, you can configure the add-on using environment variables if you want to run it on an external server. Create a `.env` file in the root of your project with the following content:
@@ -94,10 +101,37 @@ ENTITIES=sensor.temperature,sensor.humidity
 ```
 
 ### Running Locally
+
 To run the script locally, ensure you have Node.js and ts-node installed. Then, execute the following command:
 
 ```
 npx ts-node src/index.ts
+```
+
+### Collect the Data and Show on Graphs in Home Assistant
+
+```
+sensor:
+  - platform: rest
+    name: Supabase Sensor
+    resource: http://localhost:8099/api/state_history/YOUR_ENTITY_ID
+    method: GET
+    value_template: '{{ value_json[-1].state }}'
+    json_attributes_path: '$[-1]'
+    json_attributes:
+      - timestamp
+    unit_of_measurement: 'YOUR_UNIT'
+    device_class: 'YOUR_DEVICE_CLASS'
+    state_class: 'measurement'
+
+  - platform: template
+    sensors:
+      supabase_measurement:
+        friendly_name: "Supabase Measurement"
+        value_template: "{{ state_attr('sensor.supabase_sensor', 'state') }}"
+        unit_of_measurement: 'YOUR_UNIT'
+        device_class: 'YOUR_DEVICE_CLASS'
+        state_class: 'measurement'
 ```
 
 ## Contributing
@@ -115,4 +149,3 @@ All notable changes to this project are documented in the [Changelog](https://gi
 ## Acknowledgments
 
 Thanks to the Home Assistant and Supabase communities for their support and contributions.
-
