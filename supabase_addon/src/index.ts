@@ -1,3 +1,5 @@
+import express from 'express';
+import path from 'path';
 import WebSocket from 'ws';
 import { initializeSupabase, insertEvent, insertTransformedEvent } from './supabaseClient';
 import * as dotenv from 'dotenv';
@@ -112,4 +114,20 @@ const connectAndSubscribeToEvents = () => {
   });
 };
 
+// Start WebSocket connection and subscribe to events
 connectAndSubscribeToEvents();
+
+// Express server setup
+const app = express();
+const port = 8099;
+
+// Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+app.listen(port, () => {
+  console.log(`Supabase Client UI listening at http://localhost:${port}`);
+});

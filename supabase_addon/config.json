@@ -8,6 +8,8 @@
   "arch": ["armv7", "armhf", "aarch64", "amd64", "i386"],
   "startup": "services",
   "apparmor": true,
+  "ingress": true,
+  "ingress_port": 8099,
   "boot": "auto",
   "host_network": true,
   "options": {

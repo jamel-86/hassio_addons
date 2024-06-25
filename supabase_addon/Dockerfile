@@ -10,4 +10,6 @@ RUN npm install
 # Bundle app source
 COPY . .
 
+EXPOSE 8099
+
 CMD [ "npm", "start" ]
