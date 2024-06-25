@@ -1,7 +1,7 @@
 {
   "name": "Home Assistant supabase client",
   "maintainer": "@jamel-86",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "slug": "supabase_addon",
   "description": "Supabase client for Home Assistant",
   "arch": ["armv7", "armhf", "aarch64", "amd64", "i386"],
