@@ -28,15 +28,12 @@ Find the Home Assistant Supabase Client add-on in the add-on store and click **I
 3. **Configure the Add-on**
 
 After installation, navigate to the add-on's **Configuration** tab and set the necessary options:
-
-```json
-{
-  "supabase_url": "your-supabase-url",
-  "supabase_key": "your-supabase-key",
-  "home_assistant_url": "your-home-assistant-url",
-  "home_assistant_token": "your-long-lived-access-token",
-  "entities": ["sensor.temperature", "sensor.humidity"]
-}
+```
+  Supabase Url: https://[PROJECT-ID].supabase.co
+  Supabase Key: [SUPABASE_KEY]
+  Home Assistant url: http://homeassistant.local:8123
+  Home Assistant Long Lived Token: "your-long-lived-access-token"
+  entities: "[sensor.temperature, sensor.humidity, another, another]"
 ```
 
 4. **SQL Setup Instructions**
