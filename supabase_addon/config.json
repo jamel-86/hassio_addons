@@ -9,9 +9,10 @@
   "startup": "services",
   "apparmor": true,
   "ingress": true,
+  "ingress_stream": true,
   "ingress_port": 8099,
   "boot": "auto",
-  "host_network": true,
+  "host_network": false,
   "options": {
     "supabase_url": "",
     "supabase_key": "",
