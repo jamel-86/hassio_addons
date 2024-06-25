@@ -34,7 +34,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Support for storing all Home Assistant states and events in Supabase.
 - Basic configuration options via `options.json`.
 
-## [1.1.7] - 2024-06-25
+## [1.1.3] - 2024-06-25
 
 ### Added
 
@@ -46,15 +46,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Changed
 
 - Set host_network to false.
-
-## [1.1.18] - 2024-06-25
-
-### Changed
-
 - Pass the supabase key and url to the frontend with api call.
-
-## [1.1.2] - 2024-06-25
-
-### Changed
-
 - Refined the frontend with little better UI with tailwindcss.
+- Updated the README with more information.
