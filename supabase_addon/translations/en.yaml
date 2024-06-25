@@ -11,3 +11,6 @@ configuration:
   home_assistant_token:
     name: Home Assistant Token
     description: The long-lived access token of your Home Assistant instance.
+  entities:
+    name: Entities
+    description: An array [] of the entities to sync with Supabase.
