@@ -34,32 +34,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Support for storing all Home Assistant states and events in Supabase.
 - Basic configuration options via `options.json`.
 
-## [1.1.0] - 2024-06-25
+## [1.1.7] - 2024-06-25
 
 ### Added
 
 - Added icon to the addon.
-
-## [1.1.3] - 2024-06-25
-
-### Added
-
 - Added apparmor for security to the addon.
-
-## [1.1.4] - 2024-06-25
-
-### Added
-
 - Added a simple webserver to monitor the data sent to supabase.
-
-## [1.1.5] - 2024-06-25
+- Added health check.
 
 ### Changed
 
 - Set host_network to false.
-
-## [1.1.6] - 2024-06-25
-
-### Changed
-
-- Added health check.
