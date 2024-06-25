@@ -66,8 +66,8 @@ const connectAndSubscribeToEvents = () => {
     } else if (message.type === 'event') {
       const event = message.event;
 
-      // Check if the event's entity_id is in the list of entities to store
-      if (!ENTITIES.length || ENTITIES.includes(event.data.entity_id)) {
+      // Check if the event's entity_id is in the list of entities to store, or if the list is empty (store all)
+      if (ENTITIES.length === 0 || ENTITIES.includes(event.data.entity_id)) {
         // Transform the event data
         const transformedEvent = {
           entity_id: event.data.entity_id,
