@@ -55,3 +55,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Changed
 
 - If no entities are provided, store all entities.
+
+## [1.1.5] - 2024-06-25
+
+### Fixed
+
+- Fixed the issue with the missing columns in the supabase schema.
+- Fixed the issue with the event filtering mechanism.
+- Fixed the issue with the state series not being stored.

@@ -9,8 +9,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.body.classList.remove("dark");
   }
 
-  // Fetch Supabase configuration from the backend
   try {
+    // Fetch Supabase configuration from the backend
     const response = await fetch("http://localhost:8099/config");
     const config = await response.json();
 
@@ -35,9 +35,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     data.forEach((row) => {
       const tr = document.createElement("tr");
       tr.classList.add("border-b", "border-gray-200", "dark:border-gray-600");
+
+      const stateHistory = row.state_history
+        .map(
+          (entry) =>
+            `${entry.state} at ${new Date(entry.timestamp).toLocaleString()}`
+        )
+        .join("<br>");
+
       tr.innerHTML = `
         <td class="py-2 px-4">${row.entity_id}</td>
-        <td class="py-2 px-4">${row.state}</td>
+        <td class="py-2 px-4">${stateHistory}</td>
         <td class="py-2 px-4">${new Date(
           row.last_changed
         ).toLocaleString()}</td>

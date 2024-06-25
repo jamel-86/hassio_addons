@@ -5,7 +5,6 @@ import { initializeSupabase, insertEvent, insertTransformedEvent, insertState } 
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 import cors from 'cors';
-import axios from 'axios';
 
 // Load environment variables from .env file if it exists
 dotenv.config();
@@ -77,6 +76,34 @@ const connectAndSubscribeToEvents = () => {
         type: 'subscribe_events',
         event_type: 'state_changed' // Change to the event type you are interested in
       }));
+
+      // Fetch initial states
+      ws.send(JSON.stringify({
+        id: 2,
+        type: 'get_states'
+      }));
+    } else if (message.type === 'result' && message.id === 2) {
+      // Handle initial states
+      const states = message.result;
+      console.log('Fetched initial states:', states);
+
+      for (const state of states) {
+        if (ENTITIES.length === 0 || ENTITIES.includes(state.entity_id)) {
+          try {
+            console.log('Inserting state:', state);
+            await insertState({
+              entity_id: state.entity_id,
+              state: state.state,
+              attributes: state.attributes,
+              last_changed: state.last_changed,
+              last_updated: state.last_updated,
+              context: state.context,
+            });
+          } catch (error) {
+            console.error('Error inserting state:', error);
+          }
+        }
+      }
     } else if (message.type === 'event') {
       const event = message.event;
       console.log('Received event:', event);
@@ -110,6 +137,17 @@ const connectAndSubscribeToEvents = () => {
           // Insert the transformed event data
           console.log('Inserting transformed event data to Supabase');
           await insertTransformedEvent(transformedEvent);
+
+          // Insert the state data
+          console.log('Inserting state from event data:', event.data.new_state);
+          await insertState({
+            entity_id: event.data.entity_id,
+            state: event.data.new_state.state,
+            attributes: event.data.new_state.attributes,
+            last_changed: event.data.new_state.last_changed,
+            last_updated: event.data.new_state.last_updated,
+            context: event.data.new_state.context,
+          });
         } catch (error) {
           console.error('Error inserting event:', error);
         }
@@ -131,48 +169,8 @@ const connectAndSubscribeToEvents = () => {
   });
 };
 
-// Function to fetch states from Home Assistant and insert them into Supabase
-const fetchAndStoreStates = async () => {
-  try {
-    const response = await axios.get(`${HOME_ASSISTANT_URL}/api/states`, {
-      headers: {
-        Authorization: `Bearer ${HOME_ASSISTANT_TOKEN}`
-      }
-    });
-
-    const states = response.data;
-    console.log('Fetched states:', states);
-
-    for (const state of states) {
-      // Check if the state's entity_id is in the list of entities to store, or if the list is empty (store all)
-      if (ENTITIES.length === 0 || ENTITIES.includes(state.entity_id)) {
-        try {
-          console.log('Inserting state:', state);
-          await insertState({
-            entity_id: state.entity_id,
-            state: state.state,
-            attributes: state.attributes,
-            last_changed: state.last_changed,
-            last_updated: state.last_updated,
-            context: state.context,
-          });
-        } catch (error) {
-          console.error('Error inserting state:', error);
-        }
-      } else {
-        console.log('Entity not in the list of entities to store:', state.entity_id);
-      }
-    }
-  } catch (error) {
-    console.error('Error fetching states:', error);
-  }
-};
-
 // Start WebSocket connection and subscribe to events
 connectAndSubscribeToEvents();
-
-// Fetch and store states at startup
-fetchAndStoreStates();
 
 // Express server setup
 const app = express();
