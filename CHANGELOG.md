@@ -33,3 +33,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Initial release of the Home Assistant Supabase client add-on.
 - Support for storing all Home Assistant states and events in Supabase.
 - Basic configuration options via `options.json`.
+
+## [1.1.0] - 2024-06-25
+
+### Added
+
+- Added icon to the addon.
