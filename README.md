@@ -1,8 +1,8 @@
 # Home Assistant Supabase Client Add-on
 
-[![Release](https://img.shields.io/github/v/release/your-repo/home-assistant-supabase-client)](https://github.com/your-repo/home-assistant-supabase-client/releases)
-[![License](https://img.shields.io/github/license/your-repo/home-assistant-supabase-client)](LICENSE)
-[![Contributors](https://img.shields.io/github/contributors/your-repo/home-assistant-supabase-client)](https://github.com/your-repo/home-assistant-supabase-client/graphs/contributors)
+[![Release](https://img.shields.io/github/v/release/jamel-86/hassio_addons)](https://github.com/jamel-86/hassio_addons/releases)
+[![License](https://img.shields.io/github/license/jamel-86/hassio_addons)](LICENSE)
+[![Contributors](https://img.shields.io/github/contributors/jamel-86/hassio_addons)](https://github.com/jamel-86/hassio_addons/graphs/contributors)
 
 ## Overview
 
