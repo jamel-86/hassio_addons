@@ -49,3 +49,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Pass the supabase key and url to the frontend with api call.
 - Refined the frontend with little better UI with tailwindcss.
 - Updated the README with more information.
+
+## [1.1.4] - 2024-06-25
+
+### Changed
+
+- If no entities are provided, store all entities.
