@@ -45,3 +45,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Added
 
 - Added apparmor for security to the addon.
+
+## [1.1.4] - 2024-06-25
+
+### Added
+
+- Added a simple webserver to monitor the data sent to supabase.
