@@ -51,3 +51,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Added
 
 - Added a simple webserver to monitor the data sent to supabase.
+
+## [1.1.5] - 2024-06-25
+
+### Changed
+
+- Set host_network to false.
