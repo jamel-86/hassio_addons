@@ -73,3 +73,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Fixed the issue with the event filtering mechanism.
 - Fixed the issue with the state series not being stored.
 - Updated localhost vs Ip issues.
+
+## [1.2.0] - 2024-06-26
+
+### Fixed
+
+- Fixed apiendpoint issues

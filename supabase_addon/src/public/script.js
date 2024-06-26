@@ -8,8 +8,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // Determine API endpoint based on environment
-  const isLocal = window.location.hostname === "localhost";
-  const apiEndpoint = isLocal ? "http://localhost:8099/config" : "/config";
+  const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+  const homeAssistantIP = window.location.hostname;
+  const apiEndpoint = isLocal ? "http://localhost:8099/config_settings" : `http://${homeAssistantIP}:8099/config_settings`;
+
+  console.log("isLocal:", isLocal);
+  console.log("homeAssistantIP:", homeAssistantIP);
+  console.log("apiEndpoint:", apiEndpoint);
 
   try {
     // Fetch Supabase configuration from the backend
