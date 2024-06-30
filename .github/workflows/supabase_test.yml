@@ -15,5 +15,5 @@ jobs:
           args: |
             --test \
             --all \
-            --target addon-folder \
+            --target /data/supabase_addon
             --docker-hub user-name-or-space-name
