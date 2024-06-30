@@ -34,4 +34,4 @@ jobs:
             --test \
             --all \
             --target /data/supabase_addon \
-            --docker-hub user-name-or-space-name
+            --generic latest
