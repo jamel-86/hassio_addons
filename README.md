@@ -49,6 +49,7 @@ CREATE TABLE states (
     entity_id TEXT NOT NULL,
     state TEXT,
     attributes JSONB,
+    context JSONB,
     last_changed TIMESTAMP,
     last_updated TIMESTAMP,
     state_history JSONB
